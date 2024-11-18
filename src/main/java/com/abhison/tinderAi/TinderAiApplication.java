@@ -19,36 +19,35 @@ import java.util.List;
 @SpringBootApplication
 public class TinderAiApplication implements CommandLineRunner {
 
-	private static final Logger LOGGER = LogManager.getLogger(TinderAiApplication.class);
+    private static final Logger LOGGER = LogManager.getLogger(TinderAiApplication.class);
 
-	@Autowired
-	private ProfileRepository profileRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
 
-	@Autowired
-	private ConversationRepository conversationRepository;
+    @Autowired
+    private ConversationRepository conversationRepository;
 
-	public static void main(String[] args) {
-		SpringApplication.run(TinderAiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TinderAiApplication.class, args);
+    }
 
-	public void run(String... args) {
+    public void run(String... args) {
 
-		profileRepository.deleteAll();
-		conversationRepository.deleteAll();
+        profileRepository.deleteAll();
+        conversationRepository.deleteAll();
 
-		Profile profile1 = new Profile("1", "Abhishek", "Sonkar", 29, Gender.MALE, "Indian", "Software Developer", "foo.jpg", "ESFP");
-		profileRepository.save(profile1);
+        Profile profile1 = new Profile("1", "Abhishek", "Sonkar", 29, Gender.MALE, "Indian", "Software Developer", "foo.jpg", "ESFP");
+        profileRepository.save(profile1);
 
-		Profile profile2 = new Profile("2", "Babu", "Bhaiya", 30, Gender.MALE, "Indian", "Software Developer", "foo.jpg", "ESFP");
-		profileRepository.save(profile2);
+        Profile profile2 = new Profile("2", "Babu", "Bhaiya", 30, Gender.MALE, "Indian", "Software Developer", "foo.jpg", "ESFP");
+        profileRepository.save(profile2);
 
-		LOGGER.info(profileRepository.findAll());
+        LOGGER.info(profileRepository.findAll());
 
-		Conversation conversation = new Conversation("1", profile1.id(),
-				List.of(new ChatMessage("Hello", profile1.id(), LocalDateTime.now())));
+        Conversation conversation = new Conversation("1", profile1.id(), List.of(new ChatMessage("Hello", profile1.id(), LocalDateTime.now())));
 
-		conversationRepository.save(conversation);
-		LOGGER.info(conversationRepository.findAll());
-	}
+        conversationRepository.save(conversation);
+        LOGGER.info(conversationRepository.findAll());
+    }
 
 }
