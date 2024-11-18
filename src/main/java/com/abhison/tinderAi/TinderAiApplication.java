@@ -6,6 +6,8 @@ import com.abhison.tinderAi.conversations.ConversationRepository;
 import com.abhison.tinderAi.profiles.Gender;
 import com.abhison.tinderAi.profiles.Profile;
 import com.abhison.tinderAi.profiles.ProfileRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @SpringBootApplication
 public class TinderAiApplication implements CommandLineRunner {
+
+	private static final Logger LOGGER = LogManager.getLogger(TinderAiApplication.class);
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -28,15 +32,23 @@ public class TinderAiApplication implements CommandLineRunner {
 	}
 
 	public void run(String... args) {
-		Profile profile = new Profile("1", "Abhishek", "Sonkar", 29, Gender.MALE, "Indian", "Software Develope", "foo.jpg", "ESFP");
-		profileRepository.save(profile);
-		profileRepository.findAll().forEach(System.out::println);
 
-		Conversation conversation = new Conversation("1", profile.id(),
-				List.of(new ChatMessage("Hello", profile.id(), LocalDateTime.now())));
+		profileRepository.deleteAll();
+		conversationRepository.deleteAll();
+
+		Profile profile1 = new Profile("1", "Abhishek", "Sonkar", 29, Gender.MALE, "Indian", "Software Developer", "foo.jpg", "ESFP");
+		profileRepository.save(profile1);
+
+		Profile profile2 = new Profile("2", "Babu", "Bhaiya", 30, Gender.MALE, "Indian", "Software Developer", "foo.jpg", "ESFP");
+		profileRepository.save(profile2);
+
+		LOGGER.info(profileRepository.findAll());
+
+		Conversation conversation = new Conversation("1", profile1.id(),
+				List.of(new ChatMessage("Hello", profile1.id(), LocalDateTime.now())));
 
 		conversationRepository.save(conversation);
-		conversationRepository.findAll().forEach(System.out::println);
+		LOGGER.info(conversationRepository.findAll());
 	}
 
 }
